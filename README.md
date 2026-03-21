@@ -53,6 +53,20 @@ Vite will print a local URL (usually `http://localhost:5173`).
 - **No DB is required**: favorites, theme, username, and search history are stored in `localStorage`.
 - **YouTube quota**: playback relies on searching YouTube for a matching video ID; your API key quota applies.
 
+## Deploying (Netlify)
+
+Vite reads `VITE_*` variables **when Netlify runs the build**, not from your machine.
+
+1. In Netlify: **Site configuration → Environment variables**, add:
+   - `VITE_LASTFM_API_KEY`
+   - `VITE_YOUTUBE_API_KEY`
+2. **Trigger a new deploy** (Deploys → Clear cache and deploy site) after saving env vars.
+3. Build settings (also in repo `netlify.toml`):
+   - **Build command**: `npm run build`
+   - **Publish directory**: `dist`
+
+If charts load but **playback fails**, open the browser **Console** on the live site. If you see `403` / API errors from Google, your YouTube key is likely restricted: in Google Cloud → **APIs & Services → Credentials → your key → Application restrictions**, either allow **HTTP referrers** and add `https://YOUR-SITE.netlify.app/*` (and `http://localhost:5173/*` for local dev), or temporarily use **None** while testing.
+
 ## Scripts
 
 - `npm run dev`: start dev server
